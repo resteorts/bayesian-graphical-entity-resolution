@@ -1,0 +1,160 @@
+---
+title: "Test"
+author: "Melody Jiang"
+date: "6/29/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# remove variables in global environment irrelevant for testing
+rm(D,
+   levels_list_of_vec,
+   num_field,
+   a_vec,
+   b_vec,
+   mu_list_of_vec,
+   beta_vec,
+   theta_list_of_vec,
+   y_matrix,
+   z_list_of_mat)
+rm(i, id_data, iter, iter_field, j, j_prime, l, m_l_vec, nt, num_file, num_population, nv, Lambda_list_of_vec)
+```
+
+```{r}
+# Completing information from data
+num_file_test <- compute_num_file(D_test)
+nv_test <- compute_file_lengths_vec(D_test)
+nt_test <- compute_total_num_obs(D_test)
+Lambda_list_of_vec_test <- list()
+Lambda_list_of_vec_test[[1]] <- c(1, 2)
+```
+
+```{r}
+# Testing `rbeta_l_dist` for l = 1
+
+# Expect
+beta_one_expect <- rbeta(n = 100, shape1 = 2, shape2 = 100)
+hist(beta_one_expect)
+
+# Function to be tested
+beta_one_inspect <- rbeta_l_dist(num_obs = 100, l = 1,
+                                 a_vec = a_vec_test, b_vec = b_vec_test,
+                                 z_list_of_mat = z_list_of_mat_test)
+hist(beta_one_inspect)
+```
+
+```{r}
+# Testing `rtheta_l_dist` for l = 1
+
+# Expect
+theta_one_expect <- sample_dirichlet(n = 500, alpha = c(1.5, 2.5))
+hist(theta_one_expect)
+
+# Function to be tested
+theta_one_inspect <- rtheta_l_dist(num_obs = 500, l = 1, mu_list_of_vec = mu_list_of_vec_test,
+                                   nt = nt_test, nv = nv_test,
+                                   levels_list_of_vec = levels_list_of_vec_test,
+                                   D = D_test,
+                                   z_list_of_mat = z_list_of_mat_test,
+                                   y_matrix = y_matrix_test)
+hist(theta_one_inspect)
+```
+
+```{r}
+# Testing `ry_jprimel_dist` for l = 1, j_prime = 1
+
+# Expect
+res <- rmultinom(n = 800, size = 1, prob = c(0.5, 0.5))
+# Transpose
+res <- t(res)
+# Assign vales
+y_one_one_expect <- vector(mode = "numeric", length = 0)
+for (samp in 1:nrow(res)) {
+  position <- which(res[samp,] %in% 1)
+  y_one_one_expect <- c(y_one_one_expect, levels_list_of_vec_test[[1]][position])
+}
+hist(y_one_one_expect)
+
+# Function to be tested
+y_one_one_inspect <- ry_jprimel_dist(num_samp = 800, j_prime = 1, l = 1,
+                                     num_file = num_file_test,
+                                     Lambda_list_of_vec = Lambda_list_of_vec_test,
+                                     z_list_of_mat = z_list_of_mat_test,
+                                     D = D_test,
+                                     theta_list_of_vec = theta_list_of_vec_test,
+                                     levels_list_of_vec = levels_list_of_vec_test)
+hist(y_one_one_inspect)
+```
+```{r}
+# Testing `ry_jprimel_dist` for l = 1, j_prime = 2
+
+# Expect y_two_one to be 1
+
+# Function to be tested
+y_two_one_inspect <- ry_jprimel_dist(num_samp = 1, j_prime = 2, l = 1,
+                                     num_file = num_file_test,
+                                     Lambda_list_of_vec = Lambda_list_of_vec_test,
+                                     z_list_of_mat = z_list_of_mat_test,
+                                     D = D_test,
+                                     theta_list_of_vec = theta_list_of_vec_test,
+                                     levels_list_of_vec = levels_list_of_vec_test)
+```
+
+```{r}
+# Testing `rz_ijl_dist` for i = 1, j = 1, l = 1
+
+# Expect p_{111} = 0.002811518
+
+# Function to be tested
+p_one_one_inspect <- rz_ijl_dist(num_samp = 5000, i = 1, j = 1, l = 1,
+            Lambda_list_of_vec = Lambda_list_of_vec_test,
+            D = D_test,
+            y_matrix = y_matrix_test,
+            levels_list_of_vec = levels_list_of_vec_test,
+            theta_list_of_vec = theta_list_of_vec_test,
+            beta_vec = beta_vec_test)
+
+hist(p_one_one_inspect)
+sum(p_one_one_inspect)
+```
+
+```{r}
+# Testing rlambda_i_dist
+
+# Function to be tested
+lambda_i_inspect <- rlambda_i_dist(i = 1, y_matrix = y_matrix_test,
+                                   nv = nv_test,
+                                   num_field = num_field_test,
+                                   z_list_of_mat = z_list_of_mat_test,
+                                   D = D_test)
+```
+```{r}
+# expect same result as above
+y_matrix_test_mod <- y_matrix_test
+y_matrix_test_mod[1,1] <- y_matrix_test_mod[1,1]+1
+lambda_i_inspect_mod <- rlambda_i_dist(i = 1, y_matrix = y_matrix_test_mod,
+                                       nv = nv_test,
+                                       num_field = num_field_test,
+                                       z_list_of_mat = z_list_of_mat_test,
+                                       D = D_test)
+```
+```{r}
+# expect not being able to termintate
+y_matrix_test_mod <- y_matrix_test
+y_matrix_test_mod[1,2] <- y_matrix_test_mod[1,2]+1
+lambda_i_inspect_mod <- rlambda_i_dist(i = 1, y_matrix = y_matrix_test_mod,
+                                       nv = nv_test,
+                                       num_field = num_field_test,
+                                       z_list_of_mat = z_list_of_mat_test,
+                                       D = D_test)
+```
+
+
+
+
+
+

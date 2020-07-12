@@ -1,0 +1,27 @@
+---
+title: "Test Lambda Update Function"
+author: "Melody Jiang"
+date: "6/30/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+test_matrix <- rbind(c(1, 2, 3), c(3, 2, 1), c(1, 2, 3), c(3, 2, 1))
+test_matrix_new <- unique(test_matrix)
+test_Lambda <- list()
+test_Lambda[[1]] <- c(3, 4)
+```
+
+```{r}
+# Expect test_updated_Lambda to be c(1, 2)
+# Function to be tested
+test_updated_Lambda <- get_updated_Lambda_after_y(y_matrix_old = test_matrix,
+                                                  y_matrix_new = test_matrix_new,
+                                                  Lambda_list_of_vec = test_Lambda,
+                                                  num_file = 1,
+                                                  nv = c(2))
+```

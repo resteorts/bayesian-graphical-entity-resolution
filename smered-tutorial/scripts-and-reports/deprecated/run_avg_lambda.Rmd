@@ -1,0 +1,52 @@
+---
+title: "Running Averages Plot of Lambda"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# get running averages of Lambdas
+run.avg <- apply(res_Lambda, MARGIN = 2,FUN = function(x){
+  cumsum(x)
+}) / (1:nrow(res_Lambda))
+
+#running averages plot
+for (iter in 1:dim(run.avg)[2]) {
+  x.lab <- bquote(.(iter))
+  plot(1:nrow(res_Lambda), run.avg[, iter], type = "l", cex = 0.5,
+     xlab = "iteration", ylab = bquote(paste("running average of ", .(x.lab))),
+     main = bquote(paste("Running average plot of ", .(x.lab))))
+}
+```
+
+```{r}
+# get running averages of Lambdas
+run.avg <- apply(res_Lambda_2, MARGIN = 2,FUN = function(x){
+  cumsum(x)
+}) / (1:nrow(res_Lambda_2))
+
+#running averages plot
+for (iter in 1:dim(run.avg)[2]) {
+  x.lab <- bquote(.(iter))
+  plot(1:nrow(res_Lambda_2), run.avg[, iter], type = "l", cex = 0.5,
+     xlab = "iteration", ylab = bquote(paste("running average of ", .(x.lab))),
+     main = bquote(paste("Running average plot of ", .(x.lab))))
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

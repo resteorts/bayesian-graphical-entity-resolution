@@ -1,0 +1,109 @@
+---
+title: "Untitled"
+author: "Melody Jiang"
+date: "9/19/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+D1 <- processed_data[[1]]
+D2 <- processed_data[[2]]
+D3 <- processed_data[[3]]
+```
+
+```{r}
+dim(D1)
+```
+
+
+```{r}
+D1_for_plot <- matrix(data = NA, nrow = nrow(D1) * (ncol(D1) - 1), ncol = 2)
+colnames(D1_for_plot) <- c("value", "attribute")
+pos <- 1
+for (i in 1:nrow(D1)) {
+  for (j in 1:(ncol(D1) - 1) ) {
+    D1_for_plot[pos, ] <- c(D1[i, j], j)
+    pos <- pos+1
+  }
+}
+```
+```{r}
+D2_for_plot <- matrix(data = NA, nrow = nrow(D2) * (ncol(D2) - 1), ncol = 2)
+colnames(D2_for_plot) <- c("value", "attribute")
+pos <- 1
+for (i in 1:nrow(D2)) {
+  for (j in 1:(ncol(D2) - 1) ) {
+    D2_for_plot[pos, ] <- c(D2[i, j], j)
+    pos <- pos+1
+  }
+}
+```
+```{r}
+D3_for_plot <- matrix(data = NA, nrow = nrow(D3) * (ncol(D3) - 1), ncol = 2)
+colnames(D3_for_plot) <- c("value", "attribute")
+pos <- 1
+for (i in 1:nrow(D3)) {
+  for (j in 1:(ncol(D3) - 1) ) {
+    D3_for_plot[pos, ] <- c(D3[i, j], j)
+    pos <- pos+1
+  }
+}
+```
+
+```{r}
+D1_for_plot <- as.data.frame(D1_for_plot)
+D1_for_plot$attribute <- as.factor(D1_for_plot$attribute)
+```
+```{r}
+D2_for_plot <- as.data.frame(D2_for_plot)
+D2_for_plot$attribute <- as.factor(D2_for_plot$attribute)
+```
+```{r}
+D3_for_plot <- as.data.frame(D3_for_plot)
+D3_for_plot$attribute <- as.factor(D3_for_plot$attribute)
+```
+
+```{r}
+mapvalues(D1_for_plot$attribute, from = c(1, 2, 3, 4, 5, 6), to = c("SEX", "DOB_DAY", "DOB_MONTH", "DOB_YEAR", "STATE", "REGOFF"))
+```
+
+```{r}
+ggplot(D1_for_plot, aes(x = attribute, y = value)) +
+  geom_boxplot()+
+  labs(title = "File 1")
+```
+
+```{r}
+ggplot(D2_for_plot, aes(x = attribute, y = value)) +
+  geom_boxplot()+
+  labs(title = "File 2")
+```
+
+```{r}
+ggplot(D3_for_plot, aes(x = attribute, y = value)) +
+  geom_boxplot()+
+  labs(title = "File 3")
+```
+
+```{r}
+colnames(D1) <- c(1, 2, 3, 4, 5, 6, 7)
+summary(D1[, 1:6])
+```
+
+```{r}
+colnames(D2) <- c(1, 2, 3, 4, 5, 6, 7)
+summary(D2[, 1:6])
+```
+
+```{r}
+colnames(D3) <- c(1, 2, 3, 4, 5, 6, 7)
+summary(D3[, 1:6])
+```

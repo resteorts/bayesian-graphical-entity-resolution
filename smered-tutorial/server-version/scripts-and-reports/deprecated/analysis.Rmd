@@ -1,0 +1,33 @@
+---
+title: "Simple Gibbs for RL"
+author: "Melody Jiang"
+date: "6/28/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE}
+library(dplyr) # package for data manipulation
+library(igraph) # package supporting `sample_dirichlet` function
+library(Rlab) # package supporting `rbern` function
+library(blink) # record linkage package
+library(rlist)
+```
+
+```{r}
+# source functions needed later---------------------------------
+source("scripts-and-reports/function_sampleGibbs.R")
+```
+
+```{r}
+# Load data------------------------------------------------------
+
+```
+
+```{r}
+# Obtain information from data------------------------------------
+
+```
