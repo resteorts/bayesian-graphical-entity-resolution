@@ -1,0 +1,53 @@
+# Data files #
+##############
+*.csv
+*.dat
+*.Rhistory
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# Latex #
+#########
+*.aux
+*.out
+*.synctex.gz
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.Rproj.user
+
+#Private data
+smered-tutorial/data/processed-data
+smered-tutorial/data/raw-data
+Lambda-20190822-211417.txt
